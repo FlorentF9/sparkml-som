@@ -35,7 +35,7 @@ val res: DataFrame = model.transform(data)
 The quickest way to use this package is to clone the repository, compile it using sbt and publishing it locally:
 
 ```shell
-$ git clone
+$ git clone git@github.com:FlorentF9/sparkml-som.git
 $ cd sparkml-som
 $ sbt publishLocal
 ```
@@ -72,6 +72,3 @@ The package depends only on spark (core, sql and mllib) and netlib for native li
 * Add hexagonal grid topology
 * Add visualization capabilities
 * I did not extend MLWritable/MLReadable yet, so the model cannot be saved or loaded. However, as all the parameteres are stored in the `SOMModel.prototypes` variable of type `Array[Vector]`, it is straightforward to save the parameters into a file.
-
-## References
-
