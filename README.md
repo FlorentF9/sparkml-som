@@ -43,7 +43,7 @@ $ sbt publishLocal
 Then, use it in your projects by adding the dependency line to sbt:
 
 ```sbt
-"xyz.florentforest.spark.ml" %% "som" % "0.1"
+"xyz.florentforest" %% "sparkml-som" % "0.1"
 ```
 
 ## Parameters
