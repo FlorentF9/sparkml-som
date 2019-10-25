@@ -32,7 +32,13 @@ val res: DataFrame = model.transform(data)
 
 ## Installation
 
-The quickest way to use this package is to clone the repository, compile it using sbt and publishing it locally:
+The sparkml-som artifact is available on Maven Central, so the quickest way to use this package in your projects is by simply adding this dependency line to sbt:
+
+```sbt
+"xyz.florentforest" %% "sparkml-som" % "0.1"
+```
+
+An alternative way, if for example your want to modify this project, is to fork/clone the repository, compile it using sbt and publish it locally:
 
 ```shell
 $ git clone git@github.com:FlorentF9/sparkml-som.git
@@ -40,11 +46,7 @@ $ cd sparkml-som
 $ sbt publishLocal
 ```
 
-Then, use it in your projects by adding the dependency line to sbt:
-
-```sbt
-"xyz.florentforest" %% "sparkml-som" % "0.1"
-```
+Then, add the same dependency line to your sbt.
 
 ## Parameters
 
