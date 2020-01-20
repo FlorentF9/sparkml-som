@@ -250,8 +250,8 @@ class SOM(override val uid: String) extends Estimator[SOMModel] with SOMParams {
     * Temperature decay function
     */
   private def computeTemperature(iter: Int): Double = $(temperatureDecay) match {
-    case "exponential" => $(tMin) * pow( ($(tMax) / $(tMin)), (iter.toDouble / ($(maxIter) - 1) ) )
-    case "linear" => $(tMin) + (iter.toDouble / $(maxIter)) * ($(tMax) - $(tMin))
+    case "exponential" => $(tMax) * pow( ($(tMin) / $(tMax)), (iter.toDouble / ($(maxIter) - 1) ) )
+    case "linear" => $(tMax) + (iter.toDouble / ($(maxIter) - 1)) * ($(tMin) - $(tMax))
   }
 
   /**
