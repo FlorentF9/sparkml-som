@@ -91,6 +91,22 @@ class SOM(override val uid: String) extends Estimator[SOMModel] with SOMParams {
 
     val parentModel = run(instances)
     val model = copyValues(new SOMModel(uid, parentModel.prototypes).setParent(this))
+    val summary = new SOMTrainingSummary(
+      model.transform(dataset),
+      $(predictionCol),
+      $(featuresCol),
+      $(height),
+      $(width),
+      $(tMax),
+      $(tMin),
+      $(maxIter),
+      $(tol),
+      $(topology),
+      $(neighborhoodKernel),
+      $(temperatureDecay),
+      parentModel.cost,
+      parentModel.history)
+    model.setSummary(Some(summary))
 
     if (handlePersistence) {
       instances.unpersist()
@@ -156,6 +172,7 @@ class SOM(override val uid: String) extends Estimator[SOMModel] with SOMParams {
 
     var converged = false
     var cost = 0.0
+    val arrayBuilder = scala.collection.mutable.ArrayBuilder.make[Double]
     var iteration = 0
 
     val iterationStartTime = System.nanoTime()
@@ -229,6 +246,7 @@ class SOM(override val uid: String) extends Estimator[SOMModel] with SOMParams {
       cost = costAccum.value
       logInfo(s"SOM quantization error: $cost")
       iteration += 1
+      arrayBuilder += cost
     }
 
     val iterationTimeInSeconds = (System.nanoTime() - iterationStartTime) / 1e9
@@ -243,6 +261,8 @@ class SOM(override val uid: String) extends Estimator[SOMModel] with SOMParams {
     logInfo(s"The cost is $cost.")
 
     new SOMModel(Identifiable.randomUID("SOMModel"), codeVectors.map(_.vector))
+      .setCost(Some(cost))
+      .setHistory(Some(arrayBuilder.result()))
 
   }
 
@@ -386,21 +406,26 @@ object Main extends App {
 
   import spark.implicits._
 
-  final val N = 10
-  val data = Seq.tabulate(N){ i => (0.0, Vectors.dense(255.0*i/N,255.0*(N-i)/N, 0.0)) }
+  final val N = 10000
+  val rng = new JavaRandom()
+  val data = Seq.tabulate(N){ _ => (0.0, Vectors.dense(rng.nextDouble, rng.nextDouble, rng.nextDouble)) }
 
   val df = data.toDF("label", "features")
 
-  val som: SOM = new SOM() // default params
+  val som: SOM = new SOM()
+    .setMaxIter(100)
 
   val map: SOMModel = som.fit(df)
 
-  val results = map.transform(df)
-  results.show()
+  val summary = map.summary
+  println(summary.trainingCost)
+  println(summary.objectiveHistory.mkString("[", ",", "]"))
+  println(s"Iterations: ${summary.objectiveHistory.length}")
+  summary.predictions.show(false)
 
   println(map.prototypes.length)
 
-  map.prototypes.foreach(println)
+  println(map.prototypes.mkString("[", ",", "]"))
 
   spark.stop()
 }

@@ -29,8 +29,44 @@ class SOMModel(override val uid: String, val prototypes: Array[Vector]) extends 
   private val prototypesWithNorm =
     if (prototypes == null) null else prototypes.map(new VectorWithNorm(_))
 
+  private var trainingCost: Option[Double] = None
+
+  def cost: Double = trainingCost.getOrElse {
+    throw new Exception("No training cost available for this SOMModel")
+  }
+
+  def setCost(cost: Option[Double]): this.type = {
+    this.trainingCost = cost
+    this
+  }
+
+  private var objectiveHistory: Option[Array[Double]] = None
+
+  def history: Array[Double] = objectiveHistory.getOrElse {
+    throw new Exception("No objective history available for this SOMModel")
+  }
+
+  def setHistory(history: Option[Array[Double]]): this.type = {
+    this.objectiveHistory = history
+    this
+  }
+
+  private var trainingSummary: Option[SOMTrainingSummary] = None
+
+  def summary: SOMTrainingSummary = trainingSummary.getOrElse {
+    throw new Exception("No training summary available for this SOMModel")
+  }
+
+  def setSummary(summary: Option[SOMTrainingSummary]): this.type = {
+    this.trainingSummary = summary
+    this
+  }
+
+  def hasSummary: Boolean = trainingSummary.isDefined
+
   override def copy(extra: ParamMap): SOMModel = {
-    copyValues(new SOMModel(uid, prototypes), extra)
+    val newModel = copyValues(new SOMModel(uid, prototypes), extra)
+    newModel.setSummary(trainingSummary).setParent(parent)
   }
 
   def setFeaturesCol(value: String): this.type = set(featuresCol, value)
