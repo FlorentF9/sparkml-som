@@ -1,17 +1,17 @@
 name := "sparkml-som"
 organization := "xyz.florentforest"
 
-version := "0.1"
+version := "0.2"
 
 scalaVersion := "2.11.8"
 
 val sparkVersion = "2.2.0"
 
 libraryDependencies ++= Seq(
-  "org.apache.spark" %% "spark-core" % sparkVersion,
-  "org.apache.spark" %% "spark-sql" % sparkVersion,
-  "org.apache.spark" %% "spark-mllib" % sparkVersion,
-  "com.github.fommil.netlib" % "all" % "1.1.2" pomOnly()
+  "org.apache.spark"         %% "spark-core"  % sparkVersion % "provided",
+  "org.apache.spark"         %% "spark-sql"   % sparkVersion % "provided",
+  "org.apache.spark"         %% "spark-mllib" % sparkVersion % "provided",
+  "com.github.fommil.netlib"  % "all"         % "1.1.2" pomOnly()
 )
 
 // POM settings for Sonatype
