@@ -15,4 +15,4 @@ class SOMTrainingSummary(val predictions: DataFrame,
                          val neighborhoodKernel: String,
                          val temperatureDecay: String,
                          val trainingCost: Double,
-                         val objectiveHistory: Array[Double])
+                         val objectiveHistory: Array[Double]) extends Serializable
