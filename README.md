@@ -50,7 +50,7 @@ println(cost.mkString("[", ",", "]"))
 The sparkml-som artifact is available on Maven Central, so the quickest way to use this package in your projects is by simply adding this dependency line to sbt:
 
 ```sbt
-"xyz.florentforest" %% "sparkml-som" % "0.2"
+"xyz.florentforest" %% "sparkml-som" % "0.2.1"
 ```
 
 An alternative way, if for example your want to modify this project, is to fork/clone the repository, compile it using sbt and publish it locally:
