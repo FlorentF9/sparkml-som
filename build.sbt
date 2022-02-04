@@ -1,7 +1,7 @@
 name := "sparkml-som"
 organization := "xyz.florentforest"
 
-version := "0.2"
+version := "0.2.1"
 
 scalaVersion := "2.11.8"
 
@@ -21,7 +21,7 @@ scmInfo := Some(ScmInfo(url("https://github.com/FlorentF9/sparkml-som"),
   "git@github.com:FlorentF9/sparkml-som.git"))
 developers := List(Developer("FlorentF9",
   "Florent Forest",
-  "florent.forest9@gmail.com",
+  "f@florentfo.rest",
   url("http://florentfo.rest")))
 licenses += ("Apache-2.0", url("http://www.apache.org/licenses/LICENSE-2.0"))
 publishMavenStyle := true
